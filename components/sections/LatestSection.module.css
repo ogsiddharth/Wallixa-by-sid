@@ -1,0 +1,46 @@
+.section{
+    padding:90px 0;
+    background:#080808;
+}
+
+.container{
+    width:min(1400px,92%);
+    margin:auto;
+}
+
+.heading{
+    text-align:center;
+    margin-bottom:50px;
+}
+
+.heading h2{
+    color:white;
+    font-size:46px;
+    margin-bottom:10px;
+}
+
+.heading p{
+    color:#94a3b8;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:24px;
+}
+
+@media(max-width:1100px){
+.grid{
+grid-template-columns:repeat(2,1fr);
+}
+}
+
+@media(max-width:700px){
+.grid{
+grid-template-columns:1fr;
+}
+
+.heading h2{
+font-size:34px;
+}
+}

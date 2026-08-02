@@ -1,0 +1,347 @@
+.hero{
+    position:relative;
+    min-height:100vh;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:url("/images/hero.jpg") center/cover no-repeat;
+}
+
+.overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        to bottom,
+        rgba(0,0,0,.55),
+        rgba(0,0,0,.72),
+        rgba(0,0,0,.88)
+    );
+}
+
+.content{
+
+    position:relative;
+    z-index:2;
+
+    width:min(860px,92%);
+    margin:auto;
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+
+    padding:12px 24px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.12);
+
+    -webkit-backdrop-filter:blur(14px);
+    backdrop-filter:blur(14px);
+
+    color:#7dd3fc;
+
+    font-size:15px;
+
+    font-weight:600;
+}
+
+.title{
+    font-size:clamp(72px,8vw,128px);
+    line-height:.9;
+    font-weight:900;
+    letter-spacing:-3px;
+
+    animation:fadeUp .9s ease;
+}
+.title span{
+    background:linear-gradient(90deg,#38bdf8,#22d3ee);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.subtitle{
+    width:min(720px,100%);
+    margin-top:28px;
+
+    font-size:22px;
+
+    line-height:1.8;
+
+    color:#d4d4d8;
+}
+.search{
+    width:100%;
+    max-width:760px;
+    margin-top:48px;
+}
+.categories{
+
+    margin-top:26px;
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:14px;
+
+    flex-wrap:wrap;
+
+}
+
+.categories button{
+    padding:14px 24px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.1);
+    background:rgba(255,255,255,.08);
+    color:white;
+    transition:.3s;
+}
+
+.categories button:hover{
+    background:#0891b2;
+    transform:translateY(-3px);
+box-shadow:0 12px 35px rgba(14,165,233,.35);
+}
+
+@media(max-width:768px){
+
+.title{
+font-size:58px;
+}
+
+.subtitle{
+font-size:17px;
+}
+
+}
+
+.stats{
+    margin-top:50px;
+
+    display:flex;
+    justify-content:center;
+    gap:50px;
+
+    flex-wrap:wrap;
+}
+
+.stats div{
+    min-width:120px;
+
+    text-align:center;
+
+    padding:20px 28px;
+
+    border-radius:18px;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    -webkit-backdrop-filter:blur(12px);
+    backdrop-filter:blur(12px);
+}
+
+.stats h3{
+    color:white;
+    font-size:28px;
+    font-weight:800;
+}
+
+.stats span{
+    color:#9ca3af;
+    font-size:14px;
+}
+
+.scroll{
+    position:absolute;
+    bottom:30px;
+    left:50%;
+    transform:translateX(-50%);
+
+    color:white;
+    font-size:14px;
+    letter-spacing:2px;
+
+    animation:float 2s infinite;
+}
+
+@keyframes float{
+
+0%{
+transform:translate(-50%,0);
+}
+
+50%{
+transform:translate(-50%,10px);
+}
+
+100%{
+transform:translate(-50%,0);
+}
+
+}
+
+.searchBox{
+    width:min(760px,92%);
+    height:70px;
+
+    margin:50px auto 0;
+
+    display:flex;
+    align-items:center;
+
+    background:rgba(255,255,255,.08);
+
+    border:1px solid rgba(255,255,255,.12);
+
+    border-radius:999px;
+
+    -webkit-backdrop-filter:blur(18px);
+    backdrop-filter:blur(18px);
+
+    overflow:hidden;
+
+    transition:.3s;
+}
+
+.searchBox:hover{
+    border-color:#38bdf8;
+}
+
+.searchIcon{
+    color:#9ca3af;
+    margin-left:26px;
+    flex-shrink:0;
+}
+
+.searchBox input{
+    flex:1;
+
+    height:100%;
+
+    background:none;
+    border:none;
+    outline:none;
+
+    color:white;
+
+    font-size:17px;
+
+    padding:0 20px;
+}
+
+.searchBox input::placeholder{
+    color:#9ca3af;
+}
+
+.searchBox button{
+    margin-right:10px;
+
+    width:145px;
+    height:52px;
+
+    border:none;
+
+    border-radius:999px;
+
+    background:linear-gradient(
+      135deg,
+      #0ea5e9,
+      #2563eb
+    );
+
+    color:white;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.searchBox button:hover{
+    transform:scale(1.03);
+}
+
+.glowOne,
+.glowTwo{
+    position:absolute;
+
+    border-radius:50%;
+
+    filter:blur(90px);
+
+    opacity:.45;
+
+    animation:floatGlow 8s ease-in-out infinite;
+}
+
+.glowOne{
+    width:320px;
+    height:320px;
+
+    background:#2563eb;
+
+    top:12%;
+    left:8%;
+}
+
+.glowTwo{
+    width:280px;
+    height:280px;
+
+    background:#06b6d4;
+
+    right:8%;
+    bottom:12%;
+
+    animation-delay:2s;
+}
+
+@keyframes floatGlow{
+
+0%,100%{
+transform:translateY(0);
+}
+
+50%{
+transform:translateY(-30px);
+}
+
+}
+
+.title{
+    animation:fadeUp .9s ease;
+}
+
+@keyframes fadeUp{
+
+from{
+opacity:0;
+transform:translateY(40px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
