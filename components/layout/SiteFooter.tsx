@@ -1,34 +1,75 @@
+import Link from "next/link";
 import styles from "./SiteFooter.module.css";
 
-export default function Footer() {
+export default function SiteFooter() {
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
-
         <div className={styles.left}>
           <h2>Wallixa</h2>
+
           <p>
-            Premium 4K, 8K and AMOLED Wallpapers for every device.
+            Discover premium 4K, 8K, AMOLED and Desktop wallpapers
+            crafted for every device.
           </p>
         </div>
 
-        <div className={styles.links}>
-          <a href="#">Home</a>
-          <a href="#">Trending</a>
-          <a href="#">Categories</a>
-          <a href="#">Collections</a>
+        <div className={styles.column}>
+          <h3>Explore</h3>
+
+          <Link href="/">Home</Link>
+          <Link href="/trending">Trending</Link>
+          <Link href="/latest">Latest</Link>
+          <Link href="/categories">Categories</Link>
         </div>
 
-        <div className={styles.social}>
-          <a href="#">Instagram</a>
-          <a href="#">GitHub</a>
-          <a href="#">X</a>
+        <div className={styles.column}>
+          <h3>Company</h3>
+
+          <Link href="/about">About</Link>
+          <Link href="/contact">Contact</Link>
         </div>
 
+        <div className={styles.column}>
+          <h3>Legal</h3>
+
+          <Link href="/privacy-policy">
+            Privacy Policy
+          </Link>
+
+          <Link href="/terms">
+            Terms & Conditions
+          </Link>
+        </div>
+
+        <div className={styles.column}>
+          <h3>Follow</h3>
+
+          <a
+            href="https://instagram.com/"
+            target="_blank"
+          >
+            Instagram
+          </a>
+
+          <a
+            href="https://t.me/"
+            target="_blank"
+          >
+            Telegram
+          </a>
+
+          <a
+            href="https://github.com/"
+            target="_blank"
+          >
+            GitHub
+          </a>
+        </div>
       </div>
 
       <div className={styles.bottom}>
-        © 2026 Wallixa. All Rights Reserved.
+        © 2026 Wallixa • Premium Wallpapers • All Rights Reserved.
       </div>
     </footer>
   );

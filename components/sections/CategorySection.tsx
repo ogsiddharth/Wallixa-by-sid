@@ -1,20 +1,20 @@
 import Link from "next/link";
 import WallpaperCard from "@/components/cards/WallpaperCard";
-import { wallpapers } from "@/data/wallpapers";
 import styles from "./CategorySection.module.css";
+import { getCategoryWallpapers } from "@/lib/firestore";
 
 type Props = {
   title: string;
   category: string;
 };
 
-export default function CategorySection({
+export default async function CategorySection({
   title,
   category,
 }: Props) {
-  const filtered = wallpapers
-    .filter((item) => item.category === category)
-    .slice(0, 4);
+  const wallpapers = await getCategoryWallpapers(category);
+
+  const filtered = wallpapers.slice(0, 4);
 
   return (
     <section className={styles.section}>
@@ -31,17 +31,31 @@ export default function CategorySection({
         </div>
 
         <div className={styles.grid}>
-          {filtered.map((item) => (
-            <WallpaperCard
-              key={item.id}
-              image={item.image}
-              title={item.title}
-              category={item.category}
-              resolution={item.resolution}
-              slug={item.slug}
-              showActions={false}
-            />
-          ))}
+          {filtered.length > 0 ? (
+            filtered.map((item: any) => (
+              <WallpaperCard
+               id={item.id}
+                key={item.id}
+                image={item.image}
+                title={item.title}
+                category={item.category}
+                resolution={item.resolution}
+                slug={item.slug}
+                showActions={false}
+              />
+            ))
+          ) : (
+            <p
+              style={{
+                color: "#888",
+                gridColumn: "1 / -1",
+                textAlign: "center",
+                padding: "40px 0",
+              }}
+            >
+              No wallpapers found in this category.
+            </p>
+          )}
         </div>
       </div>
     </section>

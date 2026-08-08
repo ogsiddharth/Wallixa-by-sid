@@ -1,26 +1,25 @@
 import styles from "./Hero.module.css";
 import SearchBar from "@/components/ui/SearchBar";
 
-const categories = [
-  "🚗 Cars",
-  "🎌 Anime",
-  "🦸 Marvel",
-  "🌿 Nature",
-  "🎮 Gaming",
-  "📱 AMOLED",
-];
+type Props = {
+  wallpaperCount: number;
+  categoryCount: number;
+  totalDownloads: number;
+};
 
-export default function Hero() {
+export default function Hero({
+  wallpaperCount,
+  categoryCount,
+  totalDownloads,
+}: Props) {
   return (
     <section className={styles.hero}>
-
       <div className={styles.overlay}></div>
 
       <div className={styles.glowOne}></div>
       <div className={styles.glowTwo}></div>
 
       <div className={styles.content}>
-
         <div className={styles.badge}>
           Premium 4K • 8K • UHD Wallpapers
         </div>
@@ -39,35 +38,27 @@ export default function Hero() {
           <SearchBar />
         </div>
 
-        <div className={styles.categories}>
-          {categories.map((item) => (
-            <button key={item}>{item}</button>
-          ))}
-        </div>
-
         <div className={styles.stats}>
           <div>
-            <h3>25K+</h3>
+            <h3>{wallpaperCount}+</h3>
             <span>Wallpapers</span>
           </div>
 
           <div>
-            <h3>4K / 8K</h3>
-            <span>Quality</span>
+            <h3>{categoryCount}</h3>
+            <span>Categories</span>
           </div>
 
           <div>
-            <h3>100+</h3>
-            <span>Categories</span>
+            <h3>{totalDownloads}</h3>
+            <span>Downloads</span>
           </div>
         </div>
-
       </div>
 
       <div className={styles.scroll}>
         ↓ Scroll
       </div>
-
     </section>
   );
 }

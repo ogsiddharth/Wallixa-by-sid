@@ -3,10 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import styles from "./WallpaperCard.module.css";
-import { Heart, Download, Eye } from "lucide-react";
+import { Heart, Eye, Download } from "lucide-react";
 import useFavorites from "@/hooks/useFavorites";
+import DownloadButton from "@/components/download/DownloadButton";
 
 type Props = {
+  id: string;
   image: string;
   title: string;
   category: string;
@@ -16,6 +18,7 @@ type Props = {
 };
 
 export default function WallpaperCard({
+  id,
   image,
   title,
   category,
@@ -23,9 +26,34 @@ export default function WallpaperCard({
   slug,
   showActions = true,
 }: Props) {
-  const { favorites, toggleFavorite } = useFavorites();
+  const { toggleFavorite, isFavorite } = useFavorites();
 
-  const isFavorite = favorites.includes(slug);
+  const liked = isFavorite(slug);
+
+  const handleLike = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Local Favorite
+    toggleFavorite(slug);
+
+    // Firestore Like
+    try {
+      await fetch("/api/wallpaper/like", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+        }),
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <Link
@@ -41,19 +69,17 @@ export default function WallpaperCard({
 
       <div className={styles.overlay}>
         <div className={styles.top}>
-          <span className={styles.badge}>{resolution}</span>
+          <span className={styles.badge}>
+            {resolution}
+          </span>
 
           <button
             className={styles.iconBtn}
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              toggleFavorite(slug);
-            }}
+            onClick={handleLike}
           >
             <Heart
               size={18}
-              fill={isFavorite ? "currentColor" : "none"}
+              fill={liked ? "currentColor" : "none"}
             />
           </button>
         </div>
@@ -65,15 +91,27 @@ export default function WallpaperCard({
 
           {showActions && (
             <div className={styles.actions}>
-              <div className={styles.viewBtn}>
+              <button
+                className={styles.viewBtn}
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.location.href = `/wallpaper/${slug}`;
+                }}
+              >
                 <Eye size={18} />
                 <span>View</span>
-              </div>
+              </button>
 
-              <div className={styles.download}>
-                <Download size={18} />
-                <span>Download</span>
-              </div>
+              <DownloadButton
+                image={image}
+                filename={`${slug}.jpg`}
+                className={styles.download}
+              >
+                <>
+                  <Download size={18} />
+                  <span>Download</span>
+                </>
+              </DownloadButton>
             </div>
           )}
         </div>

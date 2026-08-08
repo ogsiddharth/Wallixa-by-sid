@@ -47,3 +47,31 @@
 //     </section>
 //   );
 // }
+import WallpaperCard from "@/components/cards/WallpaperCard";
+import { getFeaturedWallpapers } from "@/lib/firestore";
+
+export default async function Featured() {
+  const wallpapers = await getFeaturedWallpapers();
+
+  if (wallpapers.length === 0) return null;
+
+  return (
+    <section className="section">
+      <h2>⭐ Featured Wallpapers</h2>
+
+      <div className="grid">
+        {wallpapers.map((item: any) => (
+          <WallpaperCard
+            key={item.id}
+            id={item.id}
+            image={item.image}
+            title={item.title}
+            category={item.category}
+            resolution={item.resolution}
+            slug={item.slug}
+          />
+        ))}
+      </div>
+    </section>
+  );
+}

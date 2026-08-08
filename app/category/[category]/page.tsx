@@ -1,8 +1,9 @@
-import { wallpapers } from "@/data/wallpapers";
 import WallpaperCard from "@/components/cards/WallpaperCard";
 import Navbar from "@/components/layout/Navbar";
 import SiteFooter from "@/components/layout/SiteFooter";
 import styles from "./CategoryPage.module.css";
+
+import { getCategoryWallpapers } from "@/lib/firestore";
 
 type Props = {
   params: Promise<{
@@ -10,15 +11,19 @@ type Props = {
   }>;
 };
 
-export default async function CategoryPage({ params }: Props) {
+export default async function CategoryPage({
+  params,
+}: Props) {
   const { category } = await params;
 
+  // Get category from URL
   const categoryName = decodeURIComponent(category);
 
-  const results = wallpapers.filter(
-    (item) =>
-      item.category.toLowerCase() === categoryName.toLowerCase()
-  );
+  console.log("Category URL:", categoryName);
+
+  const wallpapers = await getCategoryWallpapers(categoryName);
+
+  console.log("Total Wallpapers:", wallpapers.length);
 
   return (
     <>
@@ -26,16 +31,21 @@ export default async function CategoryPage({ params }: Props) {
 
       <main className={styles.main}>
         <div className={styles.container}>
-
           <div className={styles.hero}>
-            <h1>{categoryName} Wallpapers</h1>
-            <p>{results.length} Premium Wallpapers</p>
+            <h1>
+              {categoryName.charAt(0).toUpperCase() +
+                categoryName.slice(1)}{" "}
+              Wallpapers
+            </h1>
+
+            <p>{wallpapers.length} Premium Wallpapers</p>
           </div>
 
           <div className={styles.grid}>
-            {results.map((item) => (
+            {wallpapers.map((item: any) => (
               <WallpaperCard
                 key={item.id}
+                 id={item.id}
                 image={item.image}
                 title={item.title}
                 category={item.category}
@@ -45,7 +55,6 @@ export default async function CategoryPage({ params }: Props) {
               />
             ))}
           </div>
-
         </div>
       </main>
 

@@ -1,39 +1,104 @@
-import Navbar from "@/components/layout/Navbar";
-import SiteFooter from "@/components/layout/SiteFooter";
+"use client";
+
+import { wallpapers } from "@/data/wallpapers";
+import WallpaperCard from "@/components/cards/WallpaperCard";
+import useFavorites from "@/hooks/useFavorites";
+import Link from "next/link";
 
 export default function FavoritesPage() {
-  return (
-    <>
-      <Navbar />
+  const { favorites } = useFavorites();
 
-      <main
+  const favoriteWallpapers = wallpapers.filter((wallpaper) =>
+    favorites.includes(wallpaper.slug)
+  );
+
+  return (
+    <main
+      style={{
+        background: "#080808",
+        minHeight: "100vh",
+        padding: "120px 0",
+      }}
+    >
+      <div
         style={{
-          minHeight: "100vh",
-          background: "#080808",
-          color: "white",
-          padding: "120px 0",
+          width: "min(1400px,92%)",
+          margin: "0 auto",
         }}
       >
-        <div
+        <h1
           style={{
-            width: "min(1400px,92%)",
-            margin: "auto",
+            color: "#fff",
+            fontSize: "48px",
+            marginBottom: "40px",
+            fontWeight: "800",
           }}
         >
-          <h1 style={{ fontSize: "48px" }}>❤️ Favorites</h1>
+          ❤️ My Favorites
+        </h1>
 
-          <p
+        {favoriteWallpapers.length === 0 ? (
+          <div
             style={{
-              color: "#888",
-              marginTop: "20px",
+              textAlign: "center",
+              padding: "120px 20px",
             }}
           >
-            Your saved wallpapers will appear here.
-          </p>
-        </div>
-      </main>
+            <h2
+              style={{
+                color: "#fff",
+                marginBottom: "16px",
+              }}
+            >
+              No favorites yet
+            </h2>
 
-      <SiteFooter />
-    </>
+            <p
+              style={{
+                color: "#888",
+                marginBottom: "30px",
+              }}
+            >
+              Save wallpapers by clicking the ❤️ icon.
+            </p>
+
+            <Link
+              href="/"
+              style={{
+                display: "inline-block",
+                background: "#0ea5e9",
+                color: "#fff",
+                padding: "14px 28px",
+                borderRadius: "12px",
+                textDecoration: "none",
+                fontWeight: "700",
+              }}
+            >
+              Browse Wallpapers
+            </Link>
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill,minmax(260px,1fr))",
+              gap: "24px",
+            }}
+          >
+            {favoriteWallpapers.map((item) => (
+              <WallpaperCard
+                key={item.id}
+                id={item.id.toString()}
+                image={item.image}
+                title={item.title}
+                category={item.category}
+                resolution={item.resolution}
+                slug={item.slug}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </main>
   );
 }

@@ -1,5 +1,12 @@
-import { wallpapers } from "@/data/wallpapers";
 import WallpaperCard from "@/components/cards/WallpaperCard";
+import { db } from "@/lib/firebase";
+import {
+  collection,
+  getDocs,
+  query,
+  orderBy,
+  addDoc,
+} from "firebase/firestore";
 
 type Props = {
   searchParams: Promise<{
@@ -7,28 +14,57 @@ type Props = {
   }>;
 };
 
-export default async function SearchPage({ searchParams }: Props) {
+export default async function SearchPage({
+  searchParams,
+}: Props) {
   const { q = "" } = await searchParams;
 
-  const keyword = q.toLowerCase().replace(/[-\s]/g, "");
+  const keyword = q
+    .toLowerCase()
+    .trim()
+    .replace(/[-\s]/g, "");
+
+  // Save searched keyword
+  if (keyword) {
+    try {
+      await addDoc(collection(db, "searchAnalytics"), {
+        keyword,
+        createdAt: Date.now(),
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  const snapshot = await getDocs(
+    query(
+      collection(db, "wallpapers"),
+      orderBy("createdAt", "desc")
+    )
+  );
+
+  const wallpapers = snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  })) as any[];
 
   const results = wallpapers.filter((item) => {
-    const title = item.title
+    const title = (item.title || "")
       .toLowerCase()
       .replace(/[-\s]/g, "");
 
-    const category = item.category
+    const category = (item.category || "")
       .toLowerCase()
       .replace(/[-\s]/g, "");
 
-    const tags = (item.tags ?? []).map((tag) =>
+    const tags = (item.tags || []).map((tag: string) =>
       tag.toLowerCase().replace(/[-\s]/g, "")
     );
 
     return (
       title.includes(keyword) ||
       category.includes(keyword) ||
-      tags.some((tag) => tag.includes(keyword))
+      tags.some((tag: string) => tag.includes(keyword))
     );
   });
 
@@ -63,9 +99,10 @@ export default async function SearchPage({ searchParams }: Props) {
               gap: "24px",
             }}
           >
-            {results.map((item) => (
+            {results.map((item: any) => (
               <WallpaperCard
                 key={item.id}
+                 id={item.id}
                 image={item.image}
                 title={item.title}
                 category={item.category}
