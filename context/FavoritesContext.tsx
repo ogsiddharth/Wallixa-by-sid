@@ -14,7 +14,8 @@ type FavoritesContextType = {
   isFavorite: (slug: string) => boolean;
 };
 
-const FavoritesContext = createContext<FavoritesContextType | null>(null);
+const FavoritesContext =
+  createContext<FavoritesContextType | null>(null);
 
 export function FavoritesProvider({
   children,
@@ -22,12 +23,23 @@ export function FavoritesProvider({
   children: ReactNode;
 }) {
   const [favorites, setFavorites] = useState<string[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const stored = localStorage.getItem("favorites");
+    try {
+      const stored = localStorage.getItem("favorites");
 
-    if (stored) {
-      setFavorites(JSON.parse(stored));
+      if (stored) {
+        const parsed = JSON.parse(stored);
+
+        if (Array.isArray(parsed)) {
+          setFavorites(parsed);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to load favorites:", error);
+    } finally {
+      setLoaded(true);
     }
   }, []);
 
@@ -37,14 +49,17 @@ export function FavoritesProvider({
         ? prev.filter((item) => item !== slug)
         : [...prev, slug];
 
-      localStorage.setItem("favorites", JSON.stringify(updated));
+      localStorage.setItem(
+        "favorites",
+        JSON.stringify(updated)
+      );
 
       return updated;
     });
   };
 
   const isFavorite = (slug: string) => {
-    return favorites.includes(slug);
+    return loaded && favorites.includes(slug);
   };
 
   return (

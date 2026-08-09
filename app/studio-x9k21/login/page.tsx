@@ -27,9 +27,9 @@ export default function LoginPage() {
         return;
       }
 
-      router.push("/admin");
+      router.push("/studio-x9k21");
     } catch (err) {
-      console.log(err);
+      console.error("Login failed:", err);
     }
   };
 

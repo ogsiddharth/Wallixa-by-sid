@@ -46,21 +46,21 @@ export default function SiteFooter() {
           <h3>Follow</h3>
 
           <a
-            href="https://instagram.com/"
+            href="https://www.instagram.com/mastersid?igsh=N3N5YmM2cWNwc2s="
             target="_blank"
           >
             Instagram
           </a>
 
           <a
-            href="https://t.me/"
+            href="https://t.me/masterSidforWallpaper"
             target="_blank"
           >
             Telegram
           </a>
 
           <a
-            href="https://github.com/"
+            href="https://github.com/ogsiddharth"
             target="_blank"
           >
             GitHub

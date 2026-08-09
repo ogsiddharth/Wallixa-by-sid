@@ -103,6 +103,7 @@ export default function WallpaperCard({
               </button>
 
               <DownloadButton
+                id={id}
                 image={image}
                 filename={`${slug}.jpg`}
                 className={styles.download}

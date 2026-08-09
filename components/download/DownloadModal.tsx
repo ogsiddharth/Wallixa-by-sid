@@ -16,24 +16,42 @@ export default function DownloadModal({
   if (!open) return null;
 
   return (
-    <div className={styles.backdrop}>
-      <div className={styles.modal}>
+    <div
+      className={styles.backdrop}
+      onClick={onClose}
+    >
+      <div
+        className={styles.modal}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button
+          className={styles.close}
+          onClick={onClose}
+          aria-label="Close"
+        >
+          ×
+        </button>
 
-        <h2>🚀 Unlock Premium Download</h2>
+        <div className={styles.icon}>
+          ❤️
+        </div>
+
+        <h2>Support Wallixa</h2>
 
         <p>
-          Support <strong>Wallixa</strong> by following us to get daily Premium
-          4K & 8K Wallpapers.
+          Follow Wallixa for new Premium 4K, 8K and
+          AMOLED wallpapers. It only takes a second.
         </p>
 
         <div className={styles.socials}>
           <a
-            href="https://www.instagram.com/mastersid/?__pwa=1"
+            href="https://www.instagram.com/mastersid?igsh=N3N5YmM2cWNwc2s="
             target="_blank"
             rel="noopener noreferrer"
             className={styles.instagram}
           >
-            📸 Follow Instagram
+            📸
+            <span>Follow Instagram</span>
           </a>
 
           <a
@@ -42,7 +60,19 @@ export default function DownloadModal({
             rel="noopener noreferrer"
             className={styles.telegram}
           >
-            📱 Join Telegram
+            ✈️
+            <span>Join Telegram</span>
+          </a>
+
+          <a
+            href="https://www.threads.com/@_siiddharth.15"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.threads}
+            // onClick={(e) => e.preventDefault()}
+          >
+            𝕏
+            <span>Follow on Threads</span>
           </a>
         </div>
 
@@ -51,16 +81,20 @@ export default function DownloadModal({
             className={styles.skip}
             onClick={onClose}
           >
-            Close
+            Maybe Later
           </button>
 
           <button
             className={styles.download}
             onClick={onDownload}
           >
-            ✅ I've Followed, Download Now
+            Continue Download
           </button>
         </div>
+
+        <small className={styles.note}>
+          Thanks for supporting Wallixa ❤️
+        </small>
       </div>
     </div>
   );

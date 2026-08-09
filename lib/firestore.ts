@@ -108,3 +108,21 @@ export async function getFeaturedWallpapers() {
     ...doc.data(),
   }));
 }
+
+
+export async function getAllWallpapersForSitemap() {
+  const snapshot = await getDocs(
+    collection(db, "wallpapers")
+  );
+
+  return snapshot.docs
+    .map((doc) => {
+      const data = doc.data();
+
+      return {
+        slug: data.slug as string,
+        createdAt: data.createdAt,
+      };
+    })
+    .filter((item) => item.slug);
+}

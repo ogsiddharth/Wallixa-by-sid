@@ -17,11 +17,18 @@ export default async function CategoryPage({
   const { category } = await params;
 
   // Get category from URL
-  const categoryName = decodeURIComponent(category);
+ const categorySlug = decodeURIComponent(category);
 
-  console.log("Category URL:", categoryName);
+const categoryName =
+  categorySlug.charAt(0).toUpperCase() +
+  categorySlug.slice(1).toLowerCase();
 
-  const wallpapers = await getCategoryWallpapers(categoryName);
+console.log("Category:", categoryName);
+
+const wallpapers =
+  await getCategoryWallpapers(categoryName);
+
+console.log("Total Wallpapers:", wallpapers.length);
 
   console.log("Total Wallpapers:", wallpapers.length);
 

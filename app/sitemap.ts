@@ -1,30 +1,55 @@
 import type { MetadataRoute } from "next";
+import { getAllWallpapersForSitemap } from "@/lib/firestore";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+const baseUrl = "https://wallixa.com";
+
+const categories = [
+  "cars",
+  "anime",
+  "marvel",
+  "nature",
+  "gaming",
+];
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const wallpapers = await getAllWallpapersForSitemap();
+
+  const categoryPages = categories.map((category) => ({
+    url: `${baseUrl}/category/${category}`,
+  }));
+
+  const wallpaperPages = wallpapers.map((wallpaper) => ({
+    url: `${baseUrl}/wallpaper/${wallpaper.slug}`,
+    lastModified:
+      wallpaper.createdAt?.toDate?.() ?? undefined,
+  }));
+
   return [
     {
-      url: "https://wallixa.com",
-      priority: 1,
+      url: baseUrl,
     },
 
     {
-      url: "https://wallixa.com/categories",
-      priority: 0.9,
+      url: `${baseUrl}/premium`,
     },
 
     {
-      url: "https://wallixa.com/trending",
-      priority: 0.9,
+      url: `${baseUrl}/about`,
     },
 
     {
-      url: "https://wallixa.com/latest",
-      priority: 0.9,
+      url: `${baseUrl}/contact`,
     },
 
     {
-      url: "https://wallixa.com/premium",
-      priority: 0.8,
+      url: `${baseUrl}/privacy-policy`,
     },
+
+    {
+      url: `${baseUrl}/terms`,
+    },
+
+    ...categoryPages,
+    ...wallpaperPages,
   ];
 }

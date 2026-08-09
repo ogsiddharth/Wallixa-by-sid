@@ -1,16 +1,31 @@
 import Link from "next/link";
 import styles from "./page.module.css";
 import { getDashboardStats } from "@/lib/dashboard";
+import LogoutButton from "./LogoutButton";
 
 export default async function StudioPage() {
   const stats = await getDashboardStats();
 
   return (
     <main className={styles.page}>
+      {/* <LogoutButton /> */}
       <div className={styles.container}>
-        <h1>Wallixa Studio</h1>
+       <div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "20px",
+    marginBottom: "30px",
+  }}
+>
+  <div>
+    <h1>Wallixa Studio</h1>
+    <p>Manage your wallpapers from one place.</p>
+  </div>
 
-        <p>Manage your wallpapers from one place.</p>
+  <LogoutButton />
+</div>
 
         <div className={styles.grid}>
           <Link

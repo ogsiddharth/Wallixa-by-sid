@@ -23,6 +23,8 @@ export const metadata: Metadata = {
     "Anime Wallpapers",
     "Car Wallpapers",
     "Nature Wallpapers",
+    "Gaming Wallpapers",
+    "Marvel Wallpapers",
     "Wallixa",
   ],
 
@@ -33,7 +35,6 @@ export const metadata: Metadata = {
   ],
 
   creator: "Wallixa",
-
   publisher: "Wallixa",
 
   openGraph: {
@@ -49,6 +50,7 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
+        alt: "Wallixa Premium 4K & 8K Wallpapers",
       },
     ],
   },
@@ -56,8 +58,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Wallixa",
-    description:
-      "Premium 4K & 8K Wallpapers",
+    description: "Premium 4K & 8K Wallpapers",
     images: ["/og-image.png"],
   },
 

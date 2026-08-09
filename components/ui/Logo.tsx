@@ -1,23 +1,30 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-3">
+    <Link
+      href="/"
+      className="flex items-center gap-3 no-underline"
+      aria-label="Wallixa Home"
+    >
+     <Image
+  src="/logo.png"
+  alt="Wallixa"
+  width={70}
+  height={70}
+  priority
+/>
 
-      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-cyan-400 text-xl font-black text-white shadow-lg shadow-cyan-500/30">
-        W
-      </div>
-
-      <div>
-        <h1 className="text-2xl font-black tracking-tight">
+      <div className="leading-none">
+        <h1 className="text-2xl font-black tracking-tight text-white">
           Wallixa
         </h1>
 
-        <p className="text-xs text-gray-400">
-          Premium 4K Wallpapers
+        <p className="mt-1 text-[10px] font-medium tracking-wide text-gray-400">
+          PREMIUM WALLPAPERS
         </p>
       </div>
-
     </Link>
   );
 }
