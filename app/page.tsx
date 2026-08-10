@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import Navbar from "@/components/layout/Navbar";
 import Hero from "@/components/hero/Hero";
 import Trending from "@/components/sections/Trending";
