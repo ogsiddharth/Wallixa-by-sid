@@ -18,27 +18,32 @@ export default async function Home() {
 
       <main>
         <Hero
-  wallpaperCount={stats.wallpaperCount}
-  categoryCount={stats.categoryCount}
-  totalDownloads={stats.totalDownloads}
-/>
+          wallpaperCount={stats.wallpaperCount}
+          categoryCount={stats.categoryCount}
+          totalDownloads={stats.totalDownloads}
+        />
 
-<Featured />
+        <Featured />
 
-<Trending />
+        <Trending />
 
         <CategorySection
-          title="🎌 Anime Collection"
+          title="Anime Collection"
           category="Anime"
         />
 
         <CategorySection
-          title="🦸 Marvel Collection"
+          title="Cars Collection"
+          category="Cars"
+        />
+
+        <CategorySection
+          title="Marvel Collection"
           category="Marvel"
         />
 
         <CategorySection
-          title="🌿 Nature Collection"
+          title="Nature Collection"
           category="Nature"
         />
 

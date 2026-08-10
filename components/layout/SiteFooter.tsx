@@ -14,14 +14,14 @@ export default function SiteFooter() {
           </p>
         </div>
 
-        <div className={styles.column}>
+        {/* <div className={styles.column}>
           <h3>Explore</h3>
 
           <Link href="/">Home</Link>
           <Link href="/trending">Trending</Link>
           <Link href="/latest">Latest</Link>
           <Link href="/categories">Categories</Link>
-        </div>
+        </div> */}
 
         <div className={styles.column}>
           <h3>Company</h3>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { FavoritesProvider } from "@/context/FavoritesContext";
+import BackToTop from "@/components/ui/BackToTop";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://wallixa.com"),
@@ -80,11 +81,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <FavoritesProvider>
-          {children}
-        </FavoritesProvider>
-      </body>
+     <body>
+  <FavoritesProvider>
+    {children}
+    <BackToTop />
+  </FavoritesProvider>
+</body>
     </html>
   );
 }
