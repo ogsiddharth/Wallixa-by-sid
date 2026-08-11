@@ -1,12 +1,18 @@
+// 
+
+
+
+
+
+
 import { NextResponse } from "next/server";
 import cloudinary from "@/lib/cloudinary-admin";
 
 import { db } from "@/lib/firebase";
 import {
   collection,
-  addDoc,
   getDocs,
-  updateDoc,
+  writeBatch,
   doc,
 } from "firebase/firestore";
 
@@ -27,89 +33,132 @@ export async function GET() {
       .max_results(500)
       .execute();
 
-  const snapshot = await getDocs(collection(db, "wallpapers"));
+    const snapshot = await getDocs(
+      collection(db, "wallpapers")
+    );
 
-const existing = new Map();
+    const existing = new Map<string, string>();
 
-snapshot.docs.forEach((docSnap) => {
-  existing.set(docSnap.data().publicId, docSnap.id);
-});
+    snapshot.docs.forEach((docSnap) => {
+      const data = docSnap.data();
+
+      if (data.publicId) {
+        existing.set(data.publicId, docSnap.id);
+      }
+    });
 
     let imported = 0;
     let skipped = 0;
 
+    const operations: {
+      type: "add" | "update";
+      id?: string;
+      data: any;
+    }[] = [];
+
     for (const image of result.resources) {
-     const folder =
-  image.asset_folder.split("/").pop() || "Others";
+      const folder =
+        image.asset_folder?.split("/").pop() || "Others";
 
-const category =
-  folder.charAt(0).toUpperCase() +
-  folder.slice(1).toLowerCase();
-
-if (existing.has(image.public_id)) {
-  const docId = existing.get(image.public_id);
-
-  await updateDoc(doc(db, "wallpapers", docId), {
-    title: image.display_name
-        .replace(/\.[^/.]+$/, "")
-        .replace(/[-_]/g, " "),
-    slug: createSlug(image.display_name
-        .replace(/\.[^/.]+$/, "")
-        .replace(/[-_]/g, " ")),
-    category,
-    image: image.secure_url,
-    publicId: image.public_id,
-  });
-
-  skipped++;
-
-  continue;
-}
+      const category =
+        folder.charAt(0).toUpperCase() +
+        folder.slice(1).toLowerCase();
 
       const title = image.display_name
         .replace(/\.[^/.]+$/, "")
         .replace(/[-_]/g, " ");
 
-await addDoc(collection(db, "wallpapers"), {
-  title,
+      const slug = createSlug(title);
 
-  slug: createSlug(title),
+      if (existing.has(image.public_id)) {
+        const docId = existing.get(image.public_id)!;
 
-  category,
+        operations.push({
+          type: "update",
+          id: docId,
+          data: {
+            title,
+            slug,
+            category,
+            image: image.secure_url,
+            publicId: image.public_id,
+          },
+        });
 
-  resolution: "8K",
+        skipped++;
+      } else {
+        operations.push({
+          type: "add",
+          data: {
+            title,
+            slug,
+            category,
+            resolution: "8K",
+            image: image.secure_url,
+            publicId: image.public_id,
+            tags: [],
+            likes: 0,
+            downloads: 0,
+            featured: false,
+            trending: false,
+            createdAt: Date.now(),
+          },
+        });
 
-  image: image.secure_url,
+        imported++;
+      }
+    }
 
-  publicId: image.public_id,
+    // Firestore batch limit is 500 operations.
+    // Keep batches below that limit for safety.
+    const BATCH_SIZE = 400;
 
-  tags: [],
+    for (
+      let i = 0;
+      i < operations.length;
+      i += BATCH_SIZE
+    ) {
+      const batch = writeBatch(db);
 
-  likes: 0,
+      const chunk = operations.slice(
+        i,
+        i + BATCH_SIZE
+      );
 
-  downloads: 0,
+      for (const operation of chunk) {
+        if (operation.type === "update") {
+          batch.update(
+            doc(db, "wallpapers", operation.id!),
+            operation.data
+          );
+        } else {
+          const newRef = doc(
+            collection(db, "wallpapers")
+          );
 
-  featured: false,
+          batch.set(newRef, operation.data);
+        }
+      }
 
-  trending: false,
-
-  createdAt: Date.now(),
-});
-
-      imported++;
+      await batch.commit();
     }
 
     return NextResponse.json({
       success: true,
       imported,
       skipped,
+      total: result.resources.length,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Cloudinary import error:", error);
 
     return NextResponse.json(
       {
         success: false,
+        error:
+          error instanceof Error
+            ? error.message
+            : "Import failed",
       },
       {
         status: 500,
