@@ -4,7 +4,7 @@ import { FavoritesProvider } from "@/context/FavoritesContext";
 import BackToTop from "@/components/ui/BackToTop";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://wallixa.com"),
+ metadataBase: new URL("https://wallixa.netlify.app"),
 
   title: {
     default: "Wallixa | Premium 4K & 8K Wallpapers",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     title: "Wallixa | Premium Wallpapers",
     description:
       "Download Premium 4K, 8K, Desktop, Mobile & AMOLED Wallpapers.",
-    url: "https://wallixa.com",
+   url: "https://wallixa.netlify.app",
     siteName: "Wallixa",
     locale: "en_US",
     type: "website",

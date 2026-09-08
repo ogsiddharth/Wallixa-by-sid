@@ -28,6 +28,10 @@ export default function Navbar() {
               </Link>
             ))}
 
+            <Link href="/collections">
+              Collections
+            </Link>
+
             <Link href="/favorites">
               ❤️ Favorites
             </Link>

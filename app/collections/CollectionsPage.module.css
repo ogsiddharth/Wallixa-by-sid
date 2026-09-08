@@ -1,0 +1,180 @@
+.main {
+  background: #080808;
+  min-height: 100vh;
+  padding: 130px 0 90px;
+}
+
+.container {
+  width: min(1400px, 92%);
+  margin: auto;
+}
+
+/* HERO */
+
+.hero {
+  margin-bottom: 50px;
+}
+
+.hero h1 {
+  color: #fff;
+  font-size: 52px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  line-height: 1.1;
+}
+
+.hero p {
+  margin-top: 12px;
+  color: #94a3b8;
+  font-size: 17px;
+}
+
+/* COLLECTION GRID */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+
+/* COLLECTION CARD */
+
+.card {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 230px;
+  padding: 28px;
+
+  border-radius: 22px;
+  overflow: hidden;
+
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(56, 189, 248, 0.12),
+      transparent 45%
+    ),
+    #111;
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  color: #fff;
+  text-decoration: none;
+
+  font-size: 27px;
+  font-weight: 750;
+
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+/* subtle shine */
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.07),
+    transparent 45%
+  );
+
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* COLLECTION NAME */
+
+.card {
+  isolation: isolate;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  left: 28px;
+  bottom: 22px;
+
+  width: 34px;
+  height: 3px;
+
+  border-radius: 10px;
+  background: #38bdf8;
+
+  transition: width 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+
+  border-color: rgba(56, 189, 248, 0.35);
+
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(56, 189, 248, 0.18),
+      transparent 48%
+    ),
+    #121212;
+
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+}
+
+.card:hover::after {
+  width: 70px;
+}
+
+/* TABLET */
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card {
+    min-height: 210px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+  .main {
+    padding: 110px 0 70px;
+  }
+
+  .hero {
+    margin-bottom: 35px;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+  }
+
+  .hero p {
+    font-size: 15px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .card {
+    min-height: 160px;
+    padding: 24px;
+
+    font-size: 24px;
+  }
+
+  .card::after {
+    left: 24px;
+    bottom: 18px;
+  }
+}

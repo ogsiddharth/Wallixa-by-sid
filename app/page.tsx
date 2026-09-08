@@ -6,6 +6,8 @@ import CategorySection from "@/components/sections/CategorySection";
 import LatestSection from "@/components/sections/LatestSection";
 import SiteFooter from "@/components/layout/SiteFooter";
 import Featured from "@/components/sections/Featured";
+import DesktopPicks from "@/components/sections/DesktopPicks";
+
 
 import { getWebsiteStats } from "@/lib/firestore";
 
@@ -25,8 +27,9 @@ export default async function Home() {
 
         <Featured />
 
+        <LatestSection />
         <Trending />
-
+        <DesktopPicks />
         <CategorySection
           title="Anime Collection"
           category="Anime"
@@ -47,7 +50,6 @@ export default async function Home() {
           category="Nature"
         />
 
-        <LatestSection />
       </main>
 
       <SiteFooter />

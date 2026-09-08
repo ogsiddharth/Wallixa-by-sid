@@ -126,3 +126,67 @@ export async function getAllWallpapersForSitemap() {
     })
     .filter((item) => item.slug);
 }
+
+
+export async function getCollectionWallpapers(collectionName: string) {
+  const collectionQuery = query(
+    collection(db, "wallpapers"),
+    where("collection", "==", collectionName)
+  );
+
+  const categoryNames: Record<string, string> = {
+  AMOLED: "Amoled",
+  DC: "Dc",
+  Space: "Space",
+  Abstract: "Abstract",
+};
+
+const categoryName =
+  categoryNames[collectionName] || collectionName;
+
+  const categoryQuery = query(
+    collection(db, "wallpapers"),
+    where("category", "==", categoryName)
+  );
+
+  const [collectionSnapshot, categorySnapshot] = await Promise.all([
+    getDocs(collectionQuery),
+    getDocs(categoryQuery),
+  ]);
+
+  const wallpapers = new Map();
+
+  collectionSnapshot.docs.forEach((doc) => {
+    wallpapers.set(doc.id, {
+      id: doc.id,
+      ...doc.data(),
+    });
+  });
+
+  categorySnapshot.docs.forEach((doc) => {
+    wallpapers.set(doc.id, {
+      id: doc.id,
+      ...doc.data(),
+    });
+  });
+
+  return Array.from(wallpapers.values());
+}
+
+
+
+
+export async function getDesktopWallpapers() {
+  const q = query(
+    collection(db, "wallpapers"),
+    where("device", "==", "Desktop"),
+    limit(8)
+  );
+
+  const snapshot = await getDocs(q);
+
+  return snapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+}

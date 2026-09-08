@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       disallow: "/studio-x9k21/",
     },
 
-    sitemap: "https://wallixa.com/sitemap.xml",
+    sitemap: "https://wallixa.netlify.app/sitemap.xml",
   };
 }

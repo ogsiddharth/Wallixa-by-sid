@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllWallpapersForSitemap } from "@/lib/firestore";
 
-const baseUrl = "https://wallixa.com";
+const baseUrl = "https://wallixa.netlify.app";
 
 const categories = [
   "cars",

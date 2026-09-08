@@ -1,14 +1,8 @@
-// 
-
-
-
-
-
-
 import { NextResponse } from "next/server";
-import cloudinary from "@/lib/cloudinary-admin";
 
+import cloudinary from "@/lib/cloudinary-admin";
 import { db } from "@/lib/firebase";
+
 import {
   collection,
   getDocs,
@@ -60,6 +54,10 @@ export async function GET() {
       const folder =
         image.asset_folder?.split("/").pop() || "Others";
 
+      const normalizedFolder = folder
+        .trim()
+        .toLowerCase();
+
       const category =
         folder.charAt(0).toUpperCase() +
         folder.slice(1).toLowerCase();
@@ -69,6 +67,24 @@ export async function GET() {
         .replace(/[-_]/g, " ");
 
       const slug = createSlug(title);
+
+      // ----------------------------------------
+      // Desktop Picks detection
+      // ----------------------------------------
+
+      const isDesktopPick =
+        normalizedFolder === "desktop picks";
+
+      const desktopData = isDesktopPick
+        ? {
+            collection: "Desktop Picks",
+            device: "Desktop",
+          }
+        : {};
+
+      // ----------------------------------------
+      // Update existing wallpaper
+      // ----------------------------------------
 
       if (existing.has(image.public_id)) {
         const docId = existing.get(image.public_id)!;
@@ -82,25 +98,42 @@ export async function GET() {
             category,
             image: image.secure_url,
             publicId: image.public_id,
+
+            ...desktopData,
           },
         });
 
         skipped++;
-      } else {
+      }
+
+      // ----------------------------------------
+      // Add new wallpaper
+      // ----------------------------------------
+
+      else {
         operations.push({
           type: "add",
           data: {
             title,
             slug,
             category,
+
+            // Desktop Picks metadata
+            ...desktopData,
+
             resolution: "8K",
+
             image: image.secure_url,
             publicId: image.public_id,
+
             tags: [],
+
             likes: 0,
             downloads: 0,
+
             featured: false,
             trending: false,
+
             createdAt: Date.now(),
           },
         });
@@ -111,6 +144,7 @@ export async function GET() {
 
     // Firestore batch limit is 500 operations.
     // Keep batches below that limit for safety.
+
     const BATCH_SIZE = 400;
 
     for (
@@ -128,7 +162,11 @@ export async function GET() {
       for (const operation of chunk) {
         if (operation.type === "update") {
           batch.update(
-            doc(db, "wallpapers", operation.id!),
+            doc(
+              db,
+              "wallpapers",
+              operation.id!
+            ),
             operation.data
           );
         } else {
@@ -136,7 +174,10 @@ export async function GET() {
             collection(db, "wallpapers")
           );
 
-          batch.set(newRef, operation.data);
+          batch.set(
+            newRef,
+            operation.data
+          );
         }
       }
 
@@ -150,7 +191,10 @@ export async function GET() {
       total: result.resources.length,
     });
   } catch (error) {
-    console.error("Cloudinary import error:", error);
+    console.error(
+      "Cloudinary import error:",
+      error
+    );
 
     return NextResponse.json(
       {

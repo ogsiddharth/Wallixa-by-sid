@@ -4,11 +4,14 @@ import Link from "next/link";
 import Script from "next/script";
 import type { Metadata } from "next";
 
-// import DownloadButton from "@/components/ui/DownloadButton";
 import DownloadButton from "@/components/download/DownloadButton";
 import LikeButton from "@/components/ui/LikeButton";
 import Navbar from "@/components/layout/Navbar";
 import RelatedWallpapers from "@/components/sections/RelatedWallpapers";
+// import PhonePreview from "@/components/preview/PhonePreview";
+// import DesktopPreview from "@/components/preview/DesktopPreview";
+
+
 import { getWallpaperBySlug } from "@/lib/firestore";
 
 import styles from "./WallpaperDetails.module.css";
@@ -43,7 +46,7 @@ export async function generateMetadata({
     `Explore premium ${category} wallpapers in high-quality 4K and 8K resolution.`;
 
   const canonicalUrl =
-    `https://wallixa.com/wallpaper/${wallpaper.slug}`;
+    `https://wallixa.netlify.app/wallpaper/${wallpaper.slug}`;
 
   return {
     title: `${title} ${resolution} Wallpaper`,
@@ -118,16 +121,17 @@ export default async function WallpaperDetailsPage({
             description:
               `Download ${wallpaper.title} ${wallpaper.resolution} wallpaper on Wallixa.`,
             contentUrl: wallpaper.image,
-            url: `https://wallixa.com/wallpaper/${wallpaper.slug}`,
+            url: `https://wallixa.netlify.app/wallpaper/${wallpaper.slug}`,
             representativeOfPage: true,
             author: {
               "@type": "Organization",
               name: "Wallixa",
-              url: "https://wallixa.com",
+              url: "https://wallixa.netlify.app",
             },
           }),
         }}
       />
+
       <main className={styles.page}>
         <div className={styles.container}>
           <div className={styles.imageWrapper}>
@@ -204,6 +208,14 @@ export default async function WallpaperDetailsPage({
           </div>
         </div>
 
+        {/* <PhonePreview
+          image={wallpaper.image}
+          title={wallpaper.title}
+        />
+        <DesktopPreview
+          image={wallpaper.image}
+          title={wallpaper.title}
+        /> */}
         <RelatedWallpapers
           currentSlug={wallpaper.slug}
           category={wallpaper.category}

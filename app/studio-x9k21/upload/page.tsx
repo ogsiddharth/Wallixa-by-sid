@@ -19,6 +19,8 @@ export default function UploadPage() {
 
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Cars");
+  const [wallpaperCollection, setWallpaperCollection] = useState("None");
+  const [device, setDevice] = useState("Both");
   const [resolution, setResolution] = useState("8K");
   const [tags, setTags] = useState("");
 
@@ -41,38 +43,39 @@ export default function UploadPage() {
       const image = await uploadImage(file);
 
       const slug = createSlug(title);
-await addDoc(collection(db, "wallpapers"), {
-  title,
-  category,
-  resolution,
 
-  image: image.secure_url,
-  publicId: image.public_id,
+      await addDoc(collection(db, "wallpapers"), {
+        title,
+        category,
+        collection: wallpaperCollection,
+        device,
+        resolution,
 
-  slug: title
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, "-")
-    .replace(/[^\w-]/g, ""),
+        image: image.secure_url,
+        publicId: image.public_id,
 
-  tags: tags
-    .split(",")
-    .map((tag) => tag.trim())
-    .filter(Boolean),
+        slug,
 
-  likes: 0,
-  downloads: 0,
+        tags: tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean),
 
-  featured: false,
-  trending: false,
+        likes: 0,
+        downloads: 0,
 
-  createdAt: Date.now(),
-});
+        featured: false,
+        trending: false,
+
+        createdAt: Date.now(),
+      });
 
       alert("Wallpaper Uploaded Successfully ✅");
 
       setTitle("");
       setCategory("Cars");
+      setWallpaperCollection("None");
+      setDevice("Both");
       setResolution("8K");
       setTags("");
       setFile(null);
@@ -115,6 +118,30 @@ await addDoc(collection(db, "wallpapers"), {
         <option>Marvel</option>
         <option>Nature</option>
         <option>Gaming</option>
+      </select>
+
+      <br />
+      <br />
+      <select
+        value={device}
+        onChange={(e) => setDevice(e.target.value)}
+      >
+        <option value="Both">Both</option>
+        <option value="Mobile">Mobile</option>
+        <option value="Desktop">Desktop</option>
+      </select>
+
+      <br />
+      <br />
+      <select
+        value={wallpaperCollection}
+        onChange={(e) => setWallpaperCollection(e.target.value)}
+      >
+        <option>None</option>
+        <option>AMOLED</option>
+        <option>DC</option>
+        <option>Space</option>
+        <option>Abstract</option>
       </select>
 
       <br />
