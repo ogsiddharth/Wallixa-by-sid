@@ -2,7 +2,7 @@
   "name": "Wallixa Studio",
   "short_name": "Wallixa",
   "description": "Mobile-first bulk wallpaper publisher for Wallixa",
-  "start_url": "/studio-x9k21/upload",
+  "start_url": "https://wallixa.netlify.app/studio-x9k21/upload",
   "display": "standalone",
   "background_color": "#0a0c10",
   "theme_color": "#0a0c10",
