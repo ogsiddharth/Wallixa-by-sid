@@ -1,23 +1,23 @@
-export async function uploadImage(file: File) {
+export async function uploadImage(
+  file: File,
+  category: string = "Others",
+  title: string = ""
+) {
   const formData = new FormData();
-
   formData.append("file", file);
-  formData.append(
-    "upload_preset",
-    process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!
-  );
+  formData.append("category", category);
+  formData.append("title", title);
 
-  const res = await fetch(
-    `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-    {
-      method: "POST",
-      body: formData,
-    }
-  );
+  const res = await fetch("/api/cloudinary/upload", {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
 
   if (!res.ok) {
-    throw new Error("Image upload failed");
+    throw new Error(data.error || "Image upload failed");
   }
 
-  return res.json();
+  return data;
 }
