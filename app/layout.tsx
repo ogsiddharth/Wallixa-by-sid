@@ -4,7 +4,7 @@ import { FavoritesProvider } from "@/context/FavoritesContext";
 import BackToTop from "@/components/ui/BackToTop";
 
 export const metadata: Metadata = {
- metadataBase: new URL("https://wallixa.netlify.app"),
+  metadataBase: new URL("https://wallixa.netlify.app"),
 
   title: {
     default: "Wallixa | Premium 4K & 8K Wallpapers",
@@ -13,6 +13,13 @@ export const metadata: Metadata = {
 
   description:
     "Download premium 4K, 8K, AMOLED, Desktop and Mobile wallpapers. Free high-quality wallpapers updated daily.",
+
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Wallixa Studio",
+  },
 
   keywords: [
     "Wallpapers",
@@ -42,7 +49,7 @@ export const metadata: Metadata = {
     title: "Wallixa | Premium Wallpapers",
     description:
       "Download Premium 4K, 8K, Desktop, Mobile & AMOLED Wallpapers.",
-   url: "https://wallixa.netlify.app",
+    url: "https://wallixa.netlify.app",
     siteName: "Wallixa",
     locale: "en_US",
     type: "website",
@@ -81,12 +88,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-     <body>
-  <FavoritesProvider>
-    {children}
-    <BackToTop />
-  </FavoritesProvider>
-</body>
+      <body>
+        <FavoritesProvider>
+          {children}
+          <BackToTop />
+        </FavoritesProvider>
+      </body>
     </html>
   );
 }
