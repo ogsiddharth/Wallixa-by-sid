@@ -72,7 +72,7 @@ export const metadata: Metadata = {
 
   icons: {
     icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    apple: "/icon-512.png",
   },
 
   robots: {

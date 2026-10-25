@@ -50,6 +50,7 @@ export default function UploadPage() {
 
   const [queue, setQueue] = useState<QueueItem[]>([]);
   const [isUploadingAll, setIsUploadingAll] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     return () => {
@@ -118,7 +119,7 @@ export default function UploadPage() {
     });
   };
 
-  // Upload to Cloudinary & Save via Secure Backend API (Bypasses browser permission errors)
+  // Upload to Cloudinary & Save via Secure Backend API
   const uploadSingleItem = async (item: QueueItem): Promise<boolean> => {
     if (!item.title.trim()) {
       updateItem(item.id, "status", "error");
@@ -184,7 +185,7 @@ export default function UploadPage() {
       // 3. Generate slug
       const slug = createSlug(item.title);
 
-      // 4. Save via Secure Backend API (Bypasses browser permission errors entirely)
+      // 4. Save via Secure Backend API
       const saveRes = await fetch("/api/cloudinary/import", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -262,14 +263,90 @@ export default function UploadPage() {
         fontFamily: "system-ui, -apple-system, sans-serif",
       }}
     >
-      {/* Header */}
-      <div style={{ marginBottom: 20 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 700, margin: "0 0 6px 0" }}>
-          Wallixa Studio · Bulk Publisher
-        </h1>
-        <p style={{ color: "#9ca3af", fontSize: 14, margin: 0 }}>
-          Select multiple wallpapers from your phone, edit titles, and publish directly.
-        </p>
+      {/* Header with Hamburger Menu */}
+      <div
+        style={{
+          marginBottom: 20,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-start",
+          position: "relative",
+        }}
+      >
+        <div>
+          <h1 style={{ fontSize: 24, fontWeight: 700, margin: "0 0 6px 0" }}>
+            Wallixa Studio · Bulk Publisher
+          </h1>
+          <p style={{ color: "#9ca3af", fontSize: 14, margin: 0 }}>
+            Select multiple wallpapers from your phone, edit titles, and publish directly.
+          </p>
+        </div>
+
+        {/* Hamburger Button */}
+        <button
+          type="button"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          style={{
+            background: "#181b24",
+            border: "1px solid #262936",
+            borderRadius: 10,
+            color: "#fff",
+            padding: "8px 12px",
+            fontSize: 18,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+          }}
+          title="Menu"
+        >
+          ☰
+        </button>
+
+        {/* Dropdown Menu */}
+        {isMenuOpen && (
+          <div
+            style={{
+              position: "absolute",
+              top: 50,
+              right: 0,
+              background: "#181b24",
+              border: "1px solid #262936",
+              borderRadius: 12,
+              boxShadow: "0 10px 25px rgba(0,0,0,0.6)",
+              zIndex: 100,
+              width: 210,
+              overflow: "hidden",
+            }}
+          >
+            <a
+              href="https://wallixa.netlify.app"
+              style={{
+                display: "block",
+                padding: "12px 16px",
+                color: "#fff",
+                fontSize: 14,
+                textDecoration: "none",
+                borderBottom: "1px solid #262936",
+              }}
+            >
+              🌐 Main Website
+            </a>
+            <a
+              href="https://wallixa.netlify.app/studio-x9k21/login?utm_source=chatgpt.com"
+              style={{
+                display: "block",
+                padding: "12px 16px",
+                color: "#60a5fa",
+                fontSize: 14,
+                textDecoration: "none",
+              }}
+            >
+              📊 Dashboard
+            </a>
+          </div>
+        )}
       </div>
 
       {/* Step 1: Global Defaults Bar */}
